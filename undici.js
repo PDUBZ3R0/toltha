@@ -284,7 +284,7 @@ export function get(path, options={}){
 }
 
 export function post(path, options={}){
-	const { headers, cookies, token, redirect, body, proxy, logger=defaultlogger, timeout } = options;
+	const { headers={}, cookies, token, redirect, body, proxy, logger=defaultlogger, timeout } = options;
 	
 	return new Promise(async resolve=>{
 		try {
@@ -292,7 +292,6 @@ export function post(path, options={}){
 			if (!body) {
 				throw new Error("body is required for POST");
 			} else {
-				if (!headers) headers = {};
 				headers["Content-Type"] = body.header;
 				headers["Content-Length"] = body.data.length;
 				data = body.data
