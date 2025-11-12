@@ -292,6 +292,7 @@ export function post(path, options={}){
 			if (!body) {
 				throw new Error("body is required for POST");
 			} else {
+				if (!headers) headers = {};
 				headers["Content-Type"] = body.header;
 				headers["Content-Length"] = body.data.length;
 				data = body.data
