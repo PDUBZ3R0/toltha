@@ -15,23 +15,25 @@ class BodyData {
 	}
 }
 
-function construct(shortname, header, conversion) {
-	return function (data) {
-		super({ shortname, header, data, conversion });
+export class FormBody extends BodyData { 
+	constructor(data){ 
+		super({ shortname: "form", header: "application/x-www-form-urlencoded", data, conversion: data => (typeof data === "object") ? qs.stringify(data) : data })
 	}
 }
-
-export class FormBody extends BodyData { 
-	constructor(data){ construct("form", "application/x-www-form-urlencoded", data => (typeof data === "object") ? qs.stringify(data) : data) }
-}
 export class TextBody extends BodyData {
-	constructor(data){ construct("text", "text/plain") }
+	constructor(data){ 
+		super({ shortname: "form", header: "text/plain", data })
+	}
 }
 export class XmlBody extends BodyData {
-	constructor(data){ construct("xml", "application/xml; charset=utf-8") }
+	constructor(data){ 
+		super({ shortname: "xml", header: "application/xml; charset=utf-8", data })
+	}
 }
 export class JsonBody extends BodyData { 
-	constructor(data){ construct("json",  "application/json; charset=utf-8", data => (typeof data === "object") ? JSON.stringify(data) : data) }
+	constructor(data){ 
+		super({ shortname: "json", header: "application/json", data, conversion:  data => (typeof data === "object") ? JSON.stringify(data) : data })
+	}
 }
 
 const BodyHelper = (function(){
