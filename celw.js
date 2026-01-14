@@ -36,7 +36,7 @@ export class JsonBody extends BodyData {
 	}
 }
 
-const BodyHelper = (function(){
+export const BodyHelper = (function(){
 	function ibodytype(type) {
 		return function(data) {
 			return new type(data);
@@ -100,14 +100,14 @@ function bodytype(mimetype, body, output) {
 
 			let text = await body.text();
 			if (/(x?html|xml)/.test(mimetype.subtype)) {
+				output.supports.dom = true
 				output.dom = function() {
 					return new Promise(async resolve=>{
 						resolve(load(text));
 					})
 				}
 			} else {
-				output.dom = new Promise(r=>r(false));
-				output.supports.dom = true
+				output.dom = _=>new Promise(r=>r(false));
 			}
 
 			output.text = function(){
@@ -117,17 +117,17 @@ function bodytype(mimetype, body, output) {
 			}
 
 			if (/json/.test(mimetype.subtype)) {
+				output.supports.json = true
 				output.json = function(){
 					return new Promise(resolve=>{
 						resolve (JSON.parse(text));
 					})
 				}
 			} else {
-				output.json = new Promise(r=>r(false));
-				output.supports.json = true
+				output.json = _=>new Promise(r=>r(false));
 			}
 
-			output.binary = new Promise(r=>r(false));
+			output.binary = _=>new Promise(r=>r(false));
 
 		} else {
 			let b = await body.arrayBuffer();
@@ -143,8 +143,8 @@ function bodytype(mimetype, body, output) {
 				});
 			}
 
-			output.json = new Promise(r=>r(false));
-			output.dom = new Promise(r=>r(false));
+			output.json = _=>new Promise(r=>r(false));
+			output.dom = _=>new Promise(r=>r(false));
 
 			output.supports = {
 				json: false,
@@ -240,7 +240,7 @@ export function head(path, options={}){
 			const { statusCode, headers: rh } = await proxyrequest(proxy, logger, path, opts);
 		
 			resolve({
-				ok: statusCode === 200,
+				ok: statusCode < 400,
 				status: statusCode,
 				headers: rh,
 				cookies: Cookie.parse(rh)
@@ -267,7 +267,7 @@ export function get(path, options={}){
 			let mimetype = mime(rh);
 
 			resolve(await bodytype(mimetype, rb, {
-				ok: statusCode === 200,
+				ok: statusCode < 200,
 				status: statusCode,
 				headers: rh,
 				cookies: Cookie.parse(rh)
@@ -302,7 +302,7 @@ export function post(path, options={}){
 			let mimetype = mime(rh);
 
 			resolve(await bodytype(mimetype, rb, {
-				ok: statusCode === 200,
+				ok: statusCode < 200,
 				status: statusCode,
 				headers: rh,
 				cookies: Cookie.parse(rh)
