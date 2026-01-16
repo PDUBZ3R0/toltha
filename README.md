@@ -2,6 +2,9 @@
 
 ### Features
 - Supports HTTP/S and SOCKS4/5 proxies per request (including auth support).
+
+- Makes it simple to POST data as a *form*, plain *text*, JSON or XML. Automatically sets `Content-Type` and `Content-Length` headers for the data type. 
+
 - Allows the response body to return an object based on `Content-Type` parse **JSON** as an Object,  **HTML, XML** & **XHTML** as a [cheerio](https://npm.io/package/cheerio) object (jQuery compatible syntax), binary formats as an `ArrayBuffer`or any text as a string, for plain text (and the fallback for mismatched headers). 
 
 ***
