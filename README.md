@@ -1,4 +1,4 @@
-<a href=#story" style="text-decoration: none; color: slategrey">****toltha***</a> is a very slim wrapper on [undici](https://npm.io/package/undici)'s request (undici is the fastest http/s client for node.js). It's purpose is to provide a thin and simple interface to support common use cases and features that currently require a lot of research or a lot of boilerplate code. It easily replaces fetch, axios or other libraries, with the primary goal being to out-perform them all.
+[*](#story)***toltha***</a> is a very slim wrapper on [undici](https://npm.io/package/undici)'s request (undici is the fastest http/s client for node.js). It's purpose is to provide a thin and simple interface to support common use cases and features that currently require a lot of research or a lot of boilerplate code. It easily replaces fetch, axios or other libraries, with the primary goal being to out-perform them all.
 
 ### Features
 - Supports HTTP/S and SOCKS4/5 proxies per request (including auth support).
